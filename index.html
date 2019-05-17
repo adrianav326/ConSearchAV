@@ -6,20 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
+<body style="text-align: center; font-family: Arial, Helvetica, sans-serif; background-image: url()">
     <h1 style="text-align: center;">ConSearch</h1>
 
     <!--Artist Select Box-->
     <form id="artist-form">
 
         <!--Label for Text Box-->
-        <label for="artist-input">Choose Your Artist</label>
+        <label for="artist-input" style= "font-size: 20px">Choose Your Artist</label>
 
         <!--Text Input Box-->
         <input type="text" id="artist-input"><br>
 
         <!--Submit Button-->
-        <input id="select-artist" type="submit" value="GO!">
+        <input id="select-artist" type="submit" value="GO!" style= "">
     </form>
 
     <!--Artist Information-->
@@ -48,9 +48,35 @@
             console.log(response);
 
             //Constructing HTML containing the artist information
-            
-        })
+            var artistName = $("<h1>").text(response.name);
+            var artistURL = $("<a>").attr("href", response.url).append(artistName);
+            var artistImage = $("<img>").attr("src", response.thumb_url);
+            var trackerCount = $("<h2>").text(response.tracker_count + 
+                                "fans traking this artist");
+            var upcomingEvents = $("<h2>").text(response.upcoming_event_count + 
+                                "upcoming events");
+            var goToArtist = $("<a>").attr("href", response.url).text("See Tour Dates");
+
+            //Empty the contents of the artist-div, append the new artist content
+            $("#artist-div").empty();
+            $("#artist-div").append(artistURL, artistImage, trackerCount, upcomingEvents, goToArtist);
+
+        });
     }
+
+    //Event handler for user clicking the select-artist button
+    $("#select-artist").on("click", function(event) {
+
+        //Preventing the button from trying to submit the form 
+        event.preventDefault();
+
+        //Storing the artist name 
+        var artist = $("#artist-input").val().trim();
+
+        //Running the searchBandInTown function (passing in the artist as an argument)
+        searchBandInTown(artist);
+
+    })
 
 </script>  
 
